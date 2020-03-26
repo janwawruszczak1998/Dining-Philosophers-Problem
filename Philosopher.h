@@ -15,6 +15,8 @@
 #include <atomic>
 #include <ncurses.h>
 
+static std::atomic_bool end_flag;
+
 
 class Philosopher{
 public:
@@ -72,7 +74,7 @@ public:
                         {
                             {
                                 std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                                mvwprintw(phi_window, 2, 1, "STATE: EATING %2d", i);
+                                mvwprintw(phi_window, 2, 1, "STATE: EATING %2d  ", i);
                                 wrefresh(phi_window);
                                   
                             }
@@ -102,7 +104,7 @@ public:
                     {
                         {
                             std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                            mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d", i);
+                            mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d  ", i);
                             wrefresh(phi_window);
                         }
                         std::this_thread::sleep_for(std::chrono::milliseconds(500 + (rand() % 50)));
@@ -115,7 +117,7 @@ public:
                 {
                     {
                         std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                        mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d", i);
+                        mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d  ", i);
                         wrefresh(phi_window);
                     }
                     std::this_thread::sleep_for(std::chrono::milliseconds(500 + (rand() % 50)));
@@ -140,7 +142,7 @@ public:
                     {
                         {
                             std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                            mvwprintw(phi_window, 2, 1, "STATE: EATING %2d", i);
+                            mvwprintw(phi_window, 2, 1, "STATE: EATING %2d  ", i);
                             wrefresh(phi_window);
                               
                         }
@@ -166,7 +168,7 @@ public:
                 {
                     {
                         std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                        mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d", i);
+                        mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d  ", i);
                         wrefresh(phi_window);
                     }
                     std::this_thread::sleep_for(std::chrono::milliseconds(500 + (rand() % 50)));
@@ -179,7 +181,7 @@ public:
             {
                 {
                     std::lock_guard<std::mutex> writing_lock(writing_mutex);
-                    mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d", i);
+                    mvwprintw(phi_window, 2, 1, "STATE: HUNGRY %2d  ", i);
                     wrefresh(phi_window);
                 }
                 std::this_thread::sleep_for(std::chrono::milliseconds(500 + (rand() % 50)));
@@ -196,7 +198,6 @@ public:
 //private:
     std::mutex writing_mutex;
     int phi_id, num_of_forks;
-    static std::atomic_bool end_flag;
     std::vector<std::unique_ptr<Fork> >& forks;
     std::thread phi_thread;
     WINDOW *phi_window;

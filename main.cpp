@@ -26,7 +26,7 @@ void draw_border(WINDOW *win, char type)
 
 int main() {
 
-
+    end_flag = false;
     // inicjalizacja widoku ncurses
     initscr();
     echo();
@@ -47,7 +47,7 @@ int main() {
     wrefresh(inputwin);
 
     // wczytanie parametru okreslajacego liczbe filozofow/widelcow
-    mvwprintw(inputwin, 1, 1, "Enter the number of philosophers (i.e. number of threads; should be an int >= 5): ");
+    mvwprintw(inputwin, 1, 1, "If you want to end program just type q, press enter and wait a a few seconds. Set the number of philosophers: ");
     wrefresh(inputwin);
     wscanw(inputwin, "%d", &NUM_OF_PHILOSOPHERS);
     wrefresh(inputwin);
@@ -81,6 +81,15 @@ int main() {
         philosophers.push_back(std::move(philosopher));
     }
     wrefresh(inputwin);
+
+    while (true)
+    {
+        if (wgetch(inputwin) == 'q')
+        {
+            end_flag = true;
+            break;
+        }
+    }
 
     // uruchomienie watkow filozofow
     for(int i = 0; i < NUM_OF_PHILOSOPHERS; ++i) {
